@@ -1,0 +1,11 @@
+{
+  "$schema": "https://railway.app/railway.json",
+  "build": {
+    "builder": "NIXPACKS_BUILDER",
+    "buildCommand": "npm install && npx prisma generate"
+  },
+  "deploy": {
+    "region": "ap-east",
+    "numReplicas": 1
+  }
+}
