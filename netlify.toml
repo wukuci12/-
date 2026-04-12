@@ -1,11 +1,8 @@
 [build]
-  command = "npx prisma generate && next build"
+  command = "next build"
   publish = ".next"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-
-[functions]
-  directory = "netlify/functions"
