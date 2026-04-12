@@ -2,10 +2,17 @@
   "$schema": "https://railway.app/railway.json",
   "build": {
     "builder": "NIXPACKS_BUILDER",
-    "buildCommand": "npm install && npx prisma generate"
+    "buildCommand": "npm install && npx prisma generate && npx prisma migrate deploy"
   },
   "deploy": {
-    "region": "ap-east",
-    "numReplicas": 1
+    "numReplicas": 1,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 10
+  },
+  "plugins": [
+    "postgresql"
+  ],
+  "variables": {
+    "DATABASE_URL": "{{Postgres.URL}}"
   }
 }
