@@ -1,11 +1,6 @@
-{
-  "build": {
-    "command": "npx prisma generate && next build",
-    "publish": ".next"
-  },
-  "functions": {
-    "nextjs": {
-      "runtime": "nodejs18.x"
-    }
-  }
-}
+[build]
+  command = "npx prisma generate && next build"
+  publish = ".next"
+
+[functions]
+  runtime = "nodejs18"
