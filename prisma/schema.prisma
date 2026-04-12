@@ -1,0 +1,140 @@
+// 高中英语学习网站数据库模式
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  username      String    @unique
+  password      String
+  name          String?
+  avatar        String?
+  level         String    @default("BEGINNER")
+  points        Int       @default(0)
+  streak        Int       @default(0)
+  lastLogin     DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // 关系
+  progress      Progress[]
+  vocabulary    UserVocabulary[]
+  exercises     UserExercise[]
+  writings      Writing[]
+  conversations Conversation[]
+}
+
+model Progress {
+  id          String   @id @default(cuid())
+  userId      String
+  module      String
+  completed   Boolean  @default(false)
+  score       Int?
+  timeSpent   Int?     // 分钟
+  completedAt DateTime?
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, module])
+}
+
+model Vocabulary {
+  id          String   @id @default(cuid())
+  word        String   @unique
+  phonetic    String?
+  meaning     String
+  example     String
+  level       String
+  category    String   // 如：高中核心词汇、高考高频词
+  tags        String   // 逗号分隔的标签，如："名词,动词,形容词"
+  createdAt   DateTime @default(now())
+
+  // 关系
+  userVocab   UserVocabulary[]
+}
+
+model UserVocabulary {
+  id          String   @id @default(cuid())
+  userId      String
+  vocabularyId String
+  status      String   @default("NEW")
+  reviewCount Int      @default(0)
+  easeFactor  Float    @default(2.5)
+  lastInterval Int?    // 上次复习间隔 (天)
+  lastReview  DateTime?
+  nextReview  DateTime?
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  vocabulary  Vocabulary @relation(fields: [vocabularyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, vocabularyId])
+}
+
+model GrammarExercise {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  content     String   // JSON格式存储题目
+  answer      String   // JSON格式存储答案
+  level       String
+  points      Int      @default(10)
+  createdAt   DateTime @default(now())
+
+  // 关系
+  userExercises UserExercise[]
+}
+
+model UserExercise {
+  id              String   @id @default(cuid())
+  userId          String
+  exerciseId      String
+  exerciseType    String
+  completed       Boolean  @default(false)
+  score           Int?
+  userAnswers     String   // JSON格式存储用户答案
+  timeSpent       Int?     // 秒
+  completedAt     DateTime?
+  createdAt       DateTime @default(now())
+
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  grammarExercise GrammarExercise? @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, exerciseId, exerciseType])
+}
+
+model Writing {
+  id          String   @id @default(cuid())
+  userId      String
+  title       String
+  content     String
+  prompt      String
+  wordCount   Int
+  claudeFeedback String? // Claude生成的反馈
+  score       Int?
+  feedback    String?   // 教师反馈
+  submittedAt DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Conversation {
+  id          String   @id @default(cuid())
+  userId      String
+  topic       String
+  messages    String   // JSON格式存储对话历史
+  duration    Int     // 秒
+  score       Int?
+  feedback    String?  // Claude生成的反馈
+  startedAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
