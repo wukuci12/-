@@ -1,0 +1,8 @@
+# Redirect without trailing slash to with trailing slash
+/auth/* /auth/:splat 301!
+/vocabulary/* /vocabulary/:splat 301!
+/grammar/* /grammar/:splat 301!
+/listening/* /listening/:splat 301!
+/reading/* /reading/:splat 301!
+/writing/* /writing/:splat 301!
+/speaking/* /speaking/:splat 301!
