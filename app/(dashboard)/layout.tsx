@@ -26,9 +26,16 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  if (!user) {
-    return null; // 或者在加载中显示
-  }
+  // 默认用户（无需登录）
+  const defaultUser = user || {
+    id: '1',
+    email: 'guest@example.com',
+    username: 'guest',
+    name: '访客',
+    level: 'BEGINNER',
+    points: 0,
+    streak: 0,
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -50,22 +57,22 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             <div className="flex items-center space-x-3">
               <div className="h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center">
                 <span className="text-indigo-600 font-medium">
-                  {user.name?.[0] || user.username?.[0] || 'U'}
+                  {defaultUser.name?.[0] || defaultUser.username?.[0] || 'U'}
                 </span>
               </div>
               <div>
-                <p className="font-medium text-gray-900">{user.name || user.username}</p>
-                <p className="text-sm text-gray-500">{user.email}</p>
+                <p className="font-medium text-gray-900">{defaultUser.name || defaultUser.username}</p>
+                <p className="text-sm text-gray-500">{defaultUser.email}</p>
               </div>
             </div>
             <div className="mt-4 flex items-center justify-between">
               <div className="text-sm">
                 <span className="text-gray-600">等级:</span>{' '}
-                <span className="font-medium text-indigo-600">{user.level}</span>
+                <span className="font-medium text-indigo-600">{defaultUser.level}</span>
               </div>
               <div className="text-sm">
                 <span className="text-gray-600">积分:</span>{' '}
-                <span className="font-medium text-green-600">{user.points}</span>
+                <span className="font-medium text-green-600">{defaultUser.points}</span>
               </div>
             </div>
           </div>
@@ -127,12 +134,12 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
               <div className="hidden md:flex items-center space-x-2 text-sm">
                 <div className="h-2 w-2 bg-green-500 rounded-full"></div>
                 <span className="text-gray-600">连续学习</span>
-                <span className="font-medium text-gray-900">{user.streak} 天</span>
+                <span className="font-medium text-gray-900">{defaultUser.streak} 天</span>
               </div>
               <div className="relative">
                 <div className="h-8 w-8 bg-indigo-100 rounded-full flex items-center justify-center cursor-pointer">
                   <span className="text-indigo-600 font-medium">
-                    {user.name?.[0] || user.username?.[0] || 'U'}
+                    {defaultUser.name?.[0] || defaultUser.username?.[0] || 'U'}
                   </span>
                 </div>
               </div>
