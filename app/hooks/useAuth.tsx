@@ -27,47 +27,64 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// 模拟用户数据（实际使用请连接后端API）
+const MOCK_USERS: Record<string, { password: string; user: User }> = {
+  'test@example.com': {
+    password: 'test123',
+    user: {
+      id: '1',
+      email: 'test@example.com',
+      username: 'testuser',
+      name: '测试用户',
+      level: 'BEGINNER',
+      points: 100,
+      streak: 0,
+    },
+  },
+};
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    // 检查当前会话
-    checkSession();
+    // 从 localStorage 恢复会话
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (e) {
+        localStorage.removeItem('user');
+      }
+    }
+    setIsLoading(false);
   }, []);
 
   const checkSession = async () => {
-    try {
-      const response = await fetch('/api/auth/session');
-      const data = await response.json();
-
-      if (data.user) {
-        setUser(data.user);
+    setIsLoading(true);
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (e) {
+        localStorage.removeItem('user');
       }
-    } catch (error) {
-      console.error('Failed to check session:', error);
-    } finally {
-      setIsLoading(false);
     }
+    setIsLoading(false);
   };
 
   const login = async (emailOrUsername: string, password: string) => {
     setIsLoading(true);
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ emailOrUsername, password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Login failed');
+      // 模拟登录（实际使用请连接后端API）
+      const mockUser = MOCK_USERS[emailOrUsername];
+      if (mockUser && mockUser.password === password) {
+        setUser(mockUser.user);
+        localStorage.setItem('user', JSON.stringify(mockUser.user));
+      } else {
+        throw new Error('邮箱或密码错误');
       }
-
-      setUser(data.user);
     } finally {
       setIsLoading(false);
     }
@@ -76,35 +93,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const register = async (email: string, username: string, password: string, name?: string) => {
     setIsLoading(true);
     try {
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, username, password, name }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Registration failed');
-      }
-
-      setUser(data.user);
+      // 模拟注册（实际使用请连接后端API）
+      const newUser: User = {
+        id: Date.now().toString(),
+        email,
+        username,
+        name: name || username,
+        level: 'BEGINNER',
+        points: 0,
+        streak: 0,
+      };
+      setUser(newUser);
+      localStorage.setItem('user', JSON.stringify(newUser));
     } finally {
       setIsLoading(false);
     }
   };
 
   const logout = async () => {
-    setIsLoading(true);
-    try {
-      await fetch('/api/auth/logout', { method: 'POST' });
-      setUser(null);
-      router.push('/login');
-    } catch (error) {
-      console.error('Logout failed:', error);
-    } finally {
-      setIsLoading(false);
-    }
+    setUser(null);
+    localStorage.removeItem('user');
+    router.push('/login');
   };
 
   const refreshUser = async () => {
@@ -112,16 +121,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        isLoading,
-        login,
-        register,
-        logout,
-        refreshUser,
-      }}
-    >
+    <AuthContext.Provider value={{ user, isLoading, login, register, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );
