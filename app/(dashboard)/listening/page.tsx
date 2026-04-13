@@ -379,7 +379,7 @@ export default function ListeningPage() {
         <h2 className="text-2xl font-bold text-gray-900 mb-6">快速开始</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Link
-            href="/listening/practice"
+            href="/listening/all"
             className="bg-white rounded-xl p-8 text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
           >
             <div className="h-16 w-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -481,7 +481,7 @@ export default function ListeningPage() {
               </div>
 
               <Link
-                href={`/listening/practice?next=${resource.id}`}
+                href="/listening/all"
                 className="block w-full py-3 text-center bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg hover:opacity-90 font-medium"
               >
                 {resource.completed ? '查看详情' : '开始练习'}
@@ -588,7 +588,7 @@ export default function ListeningPage() {
                   </td>
                   <td className="py-4 px-4">
                     <Link
-                      href={`/listening/practice?next=${resource.id}`}
+                      href="/listening/all"
                       className="text-indigo-600 hover:text-indigo-800 font-medium text-sm"
                     >
                       {resource.completed ? '查看详情' : '开始练习'}

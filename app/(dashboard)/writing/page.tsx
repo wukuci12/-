@@ -412,7 +412,7 @@ export default function WritingPage() {
               </div>
 
               <Link
-                href={`/writing/practice?prompt=${prompt.id}`}
+                href="/writing/all"
                 className="block w-full py-3 text-center bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:opacity-90 font-medium"
               >
                 开始写作

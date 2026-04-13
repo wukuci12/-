@@ -213,7 +213,7 @@ export default function SpeakingPage() {
         <h2 className="text-2xl font-bold text-gray-900 mb-6">开始口语练习</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Link
-            href="/speaking/practice"
+            href="/speaking/all"
             className="bg-white rounded-xl p-8 text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
           >
             <div className="h-16 w-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">

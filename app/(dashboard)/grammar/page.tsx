@@ -377,7 +377,7 @@ export default function GrammarPage() {
                 )}
               </div>
               <Link
-                href={`/grammar/${exercise.id}`}
+                href="/grammar/practice"
                 className="block w-full py-3 text-center bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg hover:opacity-90 font-medium"
               >
                 开始练习
@@ -449,7 +449,7 @@ export default function GrammarPage() {
                   </td>
                   <td className="py-4 px-4">
                     <Link
-                      href={`/grammar/${exercise.id}`}
+                      href="/grammar/practice"
                       className="text-indigo-600 hover:text-indigo-800 font-medium text-sm"
                     >
                       {exercise.completed ? '查看详情' : '开始练习'}

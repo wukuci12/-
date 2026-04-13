@@ -704,7 +704,7 @@ export default function ListeningResourcesPage() {
               {resource.completed ? (
                 <div className="flex space-x-3">
                   <Link
-                    href={`/listening/practice?next=${resource.id}`}
+                    href="/listening/all"
                     className="flex-1 py-3 text-center bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg hover:opacity-90 font-medium"
                   >
                     查看详情
@@ -715,7 +715,7 @@ export default function ListeningResourcesPage() {
                 </div>
               ) : (
                 <Link
-                  href={`/listening/practice?next=${resource.id}`}
+                  href="/listening/all"
                   className="block w-full py-3 text-center bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:opacity-90 font-medium"
                 >
                   开始练习
