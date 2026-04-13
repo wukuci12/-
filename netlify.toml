@@ -1,6 +1,6 @@
 [build]
-  command = "npm run postinstall && next build"
-  publish = ".next"
+  command = "npm run build"
+  publish = "out"
 
 [[redirects]]
   from = "/*"
