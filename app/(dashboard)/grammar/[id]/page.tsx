@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
 // 题型定义
@@ -34,9 +34,8 @@ interface Answer {
 }
 
 export default function GrammarExercisePage() {
-  const params = useParams();
-  const router = useRouter();
-  const exerciseId = params.id as string;
+  const searchParams = useSearchParams();
+  const exerciseId = searchParams.get('id') || '1';
 
   const [exercise, setExercise] = useState<Exercise | null>(null);
   const [answers, setAnswers] = useState<Answer[]>([]);

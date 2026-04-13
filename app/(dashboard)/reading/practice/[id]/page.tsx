@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
 interface ReadingArticle {
@@ -871,8 +871,8 @@ Individual actions can also make a difference. Reducing plastic use, choosing su
 
 export default function ReadingPracticeByIdPage() {
   const router = useRouter();
-  const params = useParams();
-  const articleId = params.id as string;
+  const searchParams = useSearchParams();
+  const articleId = searchParams.get('id') || 'res-1';
 
   const [practice, setPractice] = useState<ReadingPractice | null>(null);
   const [selectedAnswer, setSelectedAnswer] = useState<string | boolean | null>(null);
